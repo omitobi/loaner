@@ -1,0 +1,14 @@
+"<form action=\"procs2.php?id=".$sr_lg['sn']."&amp;lga=$sr_LGA\" method=\"post\"> \n <button type =\"submit\"  
+				title=\"Delete this\" name=\"del".$sr_lg['sn']."\"". " value=\"".$sr_lg['sn']."\" >".
+				"Delete</button> \n";
+				$sr_res .= "<button type =\"submit\"  
+				title=\"Update this\" name=\"upd".$sr_lg['sn']."\"". " value=\"".$sr_lg['sn']."\" >".
+				"Update</button> \n".
+				 "</form></td> \n";
+				 
+				 
+				 $loggerin=mysql_query("INSERT INTO loglog (logger_id,time_in) VALUES ('$spec_id',now())");
+		if($loggerin){
+			
+		} else {echo mysql_error();}
+		

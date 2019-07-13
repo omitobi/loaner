@@ -1,0 +1,102 @@
+
+<?php
+require_once("class/connector.php");
+$lga_id = $_GET['id'];
+$lga_lga = $_GET['lga'];
+$lga_act= $_GET['act'];
+if($lga_act == "delete"){
+	echo "This will delete the record with id $lga_id at $lga_act";
+	
+	//Deleting the record retrieved
+		if ($_GET['id'] != "") {
+		$backSel=mysql_query("select * from $lga_lga where sn ='$lga_id'",$conn);
+			if(!$backSel)
+				{
+					die ("wrong query".mysql_error());
+				}else{
+					while($backList=mysql_fetch_array($backSel)){
+					$backData=mysql_query("INSERT INTO lgabackup (pos,fname,mname,lname,phone,spec,datein,lga) VALUES('".$backList['sn']."','".$backList['fname']."','".$backList['mname']."','".$backList['lname']."','".$backList['phone']."','".$backList['spec']."','".$backList['DateEntered']."','".$lga_lga."')");
+						}
+						if(!$backData)
+							{
+								die ("wrong query".mysql_error());
+							}else{
+								$delData=mysql_query("delete from $lga_lga where sn = '$lga_id' limit 1"); 	
+								if(!$delData)
+									{
+										die ("wrong query".mysql_error());
+									} else {
+										echo "Data successfully deleted!";
+										header("Location:plane.php?msg=record_deleted");
+									}
+								}
+						}
+
+	} else {header("Location:plane.php?msg=error");} 
+	//End Deleting Record
+	
+} else if($lga_act == "update") {
+	
+	//header("Location:plane.php?id=".$lga_id."&amp;lga=$lga_lgaa &amp;act=$lga_act");
+	?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="styles/style.css" rel="stylesheet" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="images/salficon.ico" /> 	
+<title>UPDATING RECORD</title>
+</head>
+<body>
+<?php
+extract($_POST);
+	if(isset($_POST["upd_butt"])){
+		$updSel=mysql_query("replace into $lga_lga values ($lga_id, '$upd_fname', '$upd_mname', '$upd_lname', '$upd_phone','$upd_spec',now())");
+		if(!$updSel)
+				{
+					die ("wrong query".mysql_error());
+				}else{
+					{
+						echo "<script>"."alert(\"Record for ".$lga_id." to ".$lga_lga." updated successfully!\")</script>";
+						
+					}
+				}
+
+		
+	}
+
+		$backSel=mysql_query("select * from $lga_lga where sn ='$lga_id'",$conn);
+			if(!$backSel)
+				{
+					die ("wrong query".mysql_error());
+				}else{
+					while($backList=mysql_fetch_array($backSel)){
+						
+	?>
+<div id="indiv_updater">
+<h3> Here you update records:</h3>
+<hr style=" margin-right:40px"/>
+<form method="post" id="indiv_form" >
+<label>Updating id <?php echo "\"<b>".$lga_id. "</b>\" from LGA: <b>".$lga_lga."</b>"; ?>:</label><br />
+<div><label>Firstname Middlename Lastname Phone Specialization</label>
+</div>
+<input type="text" value="<?php echo $backList['fname']; ?>" name="upd_fname" />
+<input type="text" value="<?php echo $backList['mname']; ?>" name="upd_mname" />
+<input type="text" value="<?php echo $backList['lname']; ?>" name="upd_lname" />
+<input type="text" value="<?php echo $backList['phone']; ?>" name="upd_phone" />
+<input type="text" value="<?php echo $backList['spec']; ?>" name="upd_spec" /><br />
+<p align="right"><button type="submit" value="upd_canc" name="upd_canc"> Cancel</button>
+<button type="submit" value="Update" name="upd_butt"> Update</button>
+</p>
+
+</form>
+</div>
+
+</body>
+</html>
+<?php
+			};
+		}
+	} 
+	exit;
+  ?>

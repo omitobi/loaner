@@ -1,0 +1,139 @@
+.css3splitmenu{
+	margin-bottom: 700px;
+}
+div.css3splitmenu {
+    position: relative;
+    display: inline-block;
+    margin-right: 0px; /* margin to make room for menu toggler (generated content) */
+    }
+
+div.css3splitmenu > a, div.css3splitmenu > a:after { /* style main button plus split menu toggler */
+    color: black;
+    position: relative;
+    background: white; /* bg color of button */
+    text-decoration: none;
+    font: bold 13px Georgia;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    display: block;
+    padding: 8px;
+    line-height: 1em;
+    }
+
+
+div.css3splitmenu > a:hover {
+    background: #CCC;  /* hover color for menu button */
+    }
+
+div.css3splitmenu > a:after { /* split menu toggler CSS (generated content) */
+    content: "\25be"; /* down arrow HTML entity */
+    position: absolute;
+    left: 101%; /* the extra 1 % is so there's a bit of a gap next to menu button */
+    top: 0;
+    cursor: pointer;
+    -webkit-border-top-left-radius: 0;
+    -moz-border-radius-topleft: 0;
+    border-top-left-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -moz-border-radius-bottomleft: 0;
+    border-bottom-left-radius: 0;
+    }
+
+div.nocss3splitmenu > a:after { /* if this class is defined on a button, hide split menu toggler */
+		content: '';
+		display: none;
+		}
+
+div.css3splitmenu > input[type=checkbox] { /* style input control that will act as actual toggler control */
+    position: absolute;
+    left: 101%;
+    top: 0;
+    opacity: 0; /* make it invisible yet still respond to mouse events */
+    width: 25px; /* width of control */
+    height: 100%;
+    cursor: pointer;
+    }
+
+div.css3splitmenu > ul { /* style drop menu UL */
+    position: absolute;
+		-moz-transform: scaleY(0) translateY(10px);
+		-ms-transform: scaleY(0) translateY(10px);
+		-webkit-transform: scaleY(0) translateY(10px);
+		transform: scaleY(0) translateY(10px);
+		-moz-transform-origin: top;
+		-webkit-transform-origin: top;
+		transform-origin: top;
+    opacity: 0;
+    background: #999;
+    min-width: 170px; /* minimum width of menu */
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid gray;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    -moz-box-shadow: 5px 5px 5px #eee;
+    -webkit-box-shadow: 5px 5px 5px #eee;
+    box-shadow: 5px 5px 5px #eee;
+    -moz-transition: all 0.2s ease-in-out 0.2s;  /* CSS3 transition of UL state. Last 0.2s specifies delay before animation for default state */
+		-ms-transition: all 0.2s ease-in-out 0.2s;
+    -webkit-transition: all 0.2s ease-in-out 0.2s;
+    transition: all 0.2s ease-in-out 0.2s;
+    }
+
+div.css3splitmenu > input[type=checkbox]:checked ~ ul { /* UL style when user clicks on input menu toggler */
+		z-index: 100;
+    opacity: 1;
+		-moz-transform: scaleY(1) translateY(12px);
+		-ms-transform: scaleY(1) translateY(12px);
+		-webkit-transform: scaleY(1) translateY(12px);
+		transform: scaleY(1) translateY(12px);
+    -moz-transition-delay: 0; /* Set transition delay for "focus" state to 0 */
+    -ms-transition-delay: 0;
+    -webkit-transition-delay: 0;
+    transition-delay: 0;
+    }
+
+div.css3splitmenu > ul li {
+    border-bottom: 1px solid #eee; /* add border to the end of each li within UL */
+    }
+
+div.css3splitmenu > ul li a { /* style each link within drop down menu */
+    display: block;
+    padding: 7px 4px;
+    color: black;
+    text-decoration: none;
+    }
+
+
+div.css3splitmenu > ul li a:hover {
+    background: #c8f1bd;
+    }
+
+div.css3splitmenu > ul:before { /* outer arrow of drop down menu (black) */
+    content: "";
+    display: block;
+    position: absolute;
+    top: -14px; /*should be set to -border-width x 2 */
+    left: 30px;
+    width: 0;
+    height: 0;
+    border-color: transparent transparent black transparent; /*border color should be same as div div background color*/
+    border-style: solid;
+    border-width: 7px;
+    }
+
+div.css3splitmenu > ul:after { /* inner arrow (white), so the two arrows overlap, forming a bordered arrow */
+    content: "";
+    display: block;
+    position: absolute;
+    top: -12px; /*should be set to -border-width x 2 */
+    left: 31px;
+    width: 0;
+    height: 0;
+    border-color: transparent transparent white transparent; /*border color should be same as div div background color*/
+    border-style: solid;
+    border-width: 6px;
+    }

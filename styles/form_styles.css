@@ -1,0 +1,66 @@
+
+
+form div.dynamiclabel{ /* div container for each form field with pop up label */
+  display: block;
+  margin: 30px;
+	font: 16px;
+  position: relative;
+}
+
+
+form div.dynamiclabel input[type="text"], form div.dynamiclabel textarea, div.dynamiclabel input[type="password"]{
+  width: 320px;
+  padding: 10px;
+  border: 1px solid #c3c3c3;
+  border-radius: 7px;
+}
+
+ #reptype option{
+	height:30px;
+	border:none;
+	vertical-align:middle;
+	width: 320px;
+	font-size:1.4em;
+ }
+
+form div.dynamiclabel textarea{
+	height: 200px;
+}
+
+
+form div.dynamiclabel label{ /* pop up label style */
+  position: absolute;
+  left: 0;
+  color:black;
+  background: lightyellow;
+  border: 1px solid yellow;
+  border-radius: 2px;
+  padding: 3px 10px;
+  box-shadow: 4px 1px 5px gray;
+  font-weight: bold;
+	-webkit-backface-visibility: hidden;
+	top: 10px; /* initial top position of label relative to dynamiclabel container */
+  -moz-transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  -webkit-transition: all 0.4s ease-in-out; /* Safari doesn't seem to support cubic-bezier values beyond 0 to 1, so use keyword value instead */
+  -o-transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  opacity: 0;
+  z-index: -1;
+}
+
+
+form div.dynamiclabel > *:focus{ /* when user focuses on child element inside div.dynamiclabel */
+  border: 1px solid #45bcd2;
+  box-shadow: 0 0 8px 2px #98d865;
+}
+
+
+form div.dynamiclabel > *:focus + label{ /* label style when user focuses on child element inside div.dynamiclabel */
+  opacity: 1;
+  z-index:100;
+	top: -35px; /* Post top position of label on focus relative to dynamiclabel container */
+	-ms-transform: rotate(-3deg);
+	-moz-transform: rotate(-3deg);
+	-webkit-transform: rotate(-3deg);
+  transform: rotate(-3deg);
+}
