@@ -10,13 +10,14 @@ if(!isset($_SESSION["user"])){
 $notify_msg=$_GET["alert_msg"];
 include("class/connector.php");
 
-function logGetter ($logname){
+function logGetter ($conn, $logname){
 $reslitab="";
-			$reslog=mysql_query("select * from $logname ORDER BY sn");	   //userdata is the table name in tester1 database
-	if(mysql_num_rows($reslog)>0)
+			$reslog=$conn->prepare("select * from $logname ORDER BY sn")->fetchAll();	   //userdata is the table name in tester1 database
+	if(!empty($reslog))
 	{	
-		while ($resli=mysql_fetch_array($reslog))
+		foreach ($reslog as $reslii)
 			{
+			    $resli = array_values($reslii);
 				if($logname=="restorelog"){
 				
 				$reslitab .= "<tr bgcolor=\"#999999\">";
@@ -37,7 +38,7 @@ $reslitab="";
 				$reslitab.= "</tr> \n";	
 				}
 			}
-	} else {echo "<font color=\"#990000\">No Record in Table "."'".$logname."' </font>". mysql_error();}
+	} else {echo "<font color=\"#990000\">No Record in Table "."'".$logname."' </font>";}
 return $reslitab;
 }
 
@@ -166,7 +167,7 @@ div.css3droppanel {
                     Restored Date
                     </td>
                 </tr>
-              <?php echo logGetter("restorelog");	?>
+              <?php echo logGetter($conn, "restorelog");	?>
              </table>
              <img src="images/box1bottom.png" style="width:100%;" />
              
@@ -218,7 +219,7 @@ div.css3droppanel {
                     Registration Date
                     </td>
                 </tr>
-              <?php echo logGetter("reglog");	?>
+              <?php echo logGetter($conn, "reglog");	?>
              </table>
              <img src="images/box1bottom.png" style="width:100%;" />
              
@@ -267,7 +268,7 @@ div.css3droppanel {
                     Time Out
                     </td>
                 </tr>
-              <?php echo logGetter("loglog");	?>
+              <?php echo logGetter($conn, "loglog");	?>
              </table>
              <img src="images/box1bottom.png" style="width:100%;" />
              

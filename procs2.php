@@ -10,13 +10,15 @@ require_once("class/connector.php");
 $o_act=$_GET["aact"].$_GET["n"].$_GET["l"];
 if($o_act=="out"){
 	echo "Logging out!".$_SESSION["user"];
-		$outque=mysql_query("update loglog set time_out = now() where logger_id = '".$_SESSION["user"]."';",$conn);
-		if ($outque){
-			echo "Logging out!";
-		session_destroy();
-		header("Location:index.php?alert_msg=Logged+out!");
-		exit;
-		}else{echo mysql_error();}
+	try {
+        $outque=$conn->prepare("update loglog set time_out = now() where logger_id = '".$_SESSION["user"]."';")->execute();
+            echo "Logging out!";
+            session_destroy();
+            header("Location:index.php?alert_msg=Logged+out!");
+            exit;
+        } catch(PDOException $exception){
+            echo $exception->getMessage();
+        }
 } else{ exit;}
 
 ?>

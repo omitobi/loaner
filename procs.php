@@ -21,22 +21,21 @@ if($lga_act == "delete"){
 	
 	//Deleting the record retrieved
 		if ($_GET['id'] != "") {
-		$backSel=mysql_query("select * from $lga_lga where sn ='$lga_id'",$conn);
-			if(!$backSel)
-				{
-					die ("wrong query".mysql_error());
+		$backSel=$conn->prepare("select * from $lga_lga where sn ='$lga_id'",$conn)->fetchAll();
+			if(empty($backSel)) {
+					die ("wrong query");
 				}else{
-					while($backList=mysql_fetch_array($backSel)){
-					$backData=mysql_query("INSERT INTO lgabackup (sn,fname,mname,lname,phone,gender,age,spec,datein,lga,address) VALUES('".$backList['sn']."','".$backList['fname']."','".$backList['mname']."','".$backList['lname']."','".$backList['phone']."','".$backList['gender']."','".$backList['age']."','".$backList['spec']."','".$backList['DateEntered']."','".$lga_lga."','".$backList['address']."')");
+					foreach ($backSel as $backList) {
+					$backData=$conn->prepare("INSERT INTO lgabackup (sn,fname,mname,lname,phone,gender,age,spec,datein,lga,address) VALUES('".$backList['sn']."','".$backList['fname']."','".$backList['mname']."','".$backList['lname']."','".$backList['phone']."','".$backList['gender']."','".$backList['age']."','".$backList['spec']."','".$backList['DateEntered']."','".$lga_lga."','".$backList['address']."')")->execute();
 						}
 						if(!$backData)
 							{
-								die ("wrong query".mysql_error());
+								die ("wrong query");
 							}else{
-								$delData=mysql_query("delete from $lga_lga where sn = '$lga_id' limit 1"); 	
+								$delData=$conn->prepare("delete from $lga_lga where sn = '$lga_id' limit 1")->execute();
 								if(!$delData)
 									{
-										die ("wrong query".mysql_error());
+										die ("wrong query");
 									} else {
 										echo "Data successfully deleted!";
 										header("Location:updater.php?alert_msg=record_deleted");
@@ -49,26 +48,26 @@ if($lga_act == "delete"){
 	
 }else if($lga_act == "res"){
 	if ($_GET['id'] != "") {
-		$resSel=mysql_query("select * from $lga_lga where sn ='$lga_id'",$conn);
-	if(!$resSel)
+		$resSel=$conn->prepare("select * from $lga_lga where sn ='$lga_id'",$conn)->fetchAll();
+	if(empty($resSel))
 				{
-					die ("wrong query".mysql_error());
+					die ("wrong query");
 				}else{
-					while($resList=mysql_fetch_array($resSel)){
-						$resData=mysql_query("INSERT INTO ". $resList['lga']." (sn,fname,mname,lname,phone,gender,age,spec,address,DateEntered) VALUES('".$resList['sn']."','".$resList['fname']."','".$resList['mname']."','".$resList['lname']."','".$resList['phone']."','".$resList['gender']."','".$resList['age']."','".$resList['spec']."','".$resList['address']."','".$resList['address']."');");
+					foreach ($resSel as $resList){
+						$resData=$conn->prepare("INSERT INTO ". $resList['lga']." (sn,fname,mname,lname,phone,gender,age,spec,address,DateEntered) VALUES('".$resList['sn']."','".$resList['fname']."','".$resList['mname']."','".$resList['lname']."','".$resList['phone']."','".$resList['gender']."','".$resList['age']."','".$resList['spec']."','".$resList['address']."','".$resList['address']."');")->execute();
 					if(!$resData)
 							{
-								die ("wrong query".mysql_error());
+								die ("wrong query");
 							}else{
-								$resLogData=mysql_query("INSERT INTO restorelog (res_by,res_sn,res_lga,del_date,res_date) VALUES ('omitobi','".$lga_id."','".$resList['lga']."','".$resList['datedel']."',now())");
+								$resLogData=$conn->prepare("INSERT INTO restorelog (res_by,res_sn,res_lga,del_date,res_date) VALUES ('omitobi','".$lga_id."','".$resList['lga']."','".$resList['datedel']."',now())")->execute();
 							if(!$resLogData)
 									{
-										die ("wrong query".mysql_error());
+										die ("wrong query");
 									} else {
-										$delBackRes=mysql_query("delete from $lga_lga where sn = '$lga_id' limit 1"); 	
+										$delBackRes=$conn->prepare("delete from $lga_lga where sn = '$lga_id' limit 1")->execute();
 								if(!$delBackRes)
 									{
-										die ("wrong query".mysql_error());
+										die ("wrong query");
 									} else {
 										echo "Data successfully Restored!";
 										header("Location:restorer.php?alert_msg=record_restored");
@@ -131,10 +130,10 @@ extract($_POST);
 	if(isset($_POST["upd_butt"])){
 		
 		echo "<script> alert(\"$lga_lga, $lga_id, '$upd_fname', '$upd_mname', '$upd_lname', '$upd_phone','$upd_gender','$upd_age','$upd_spec','$upd_add'\"); </script>";
-		$updSel=mysql_query("replace into $lga_lga values ($lga_id, '$upd_fname', '$upd_mname', '$upd_lname', '$upd_phone','$upd_gender','$upd_age','$upd_spec','$upd_add',now())");
+		$updSel=$conn->prepare("replace into $lga_lga values ($lga_id, '$upd_fname', '$upd_mname', '$upd_lname', '$upd_phone','$upd_gender','$upd_age','$upd_spec','$upd_add',now())")->execute();
 		if(!$updSel)
 				{
-					die ("wrong query".mysql_error());
+					die ("wrong query");
 				}else{
 					$msg1 = "Record for ".$lga_id." to ".$lga_lga." updated successfully!";
 						header("Location:updater.php?alert_msg=".$msg1);
@@ -145,12 +144,12 @@ extract($_POST);
 			header("Location:updater.php?alert_msg=Cancelled");
 		}
 
-		$backSel=mysql_query("select * from $lga_lga where sn ='$lga_id'",$conn);
-			if(!$backSel)
+		$backSel=$conn->prepare("select * from $lga_lga where sn ='$lga_id'",$conn)->fetchAll();
+			if(empty($backSel))
 				{
-					die ("wrong query".mysql_error());
+					die ("wrong query");
 				}else{
-					while($backList=mysql_fetch_array($backSel)){
+					foreach($backSel as $backList){
 						
 	?>
     <!-- Top navigation codes here -->

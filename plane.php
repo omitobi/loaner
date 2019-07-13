@@ -17,14 +17,12 @@ if (isset($sr_LGA_bt)){
 	echo $sr_lname;
 	echo $sr_phone;
 	
-	$lgSearch=mysql_query("select * from $sr_LGA where fname like '$sr_fname%'",$conn);
-	if(!$lgSearch)
-		{
-			die ("wrong query".mysql_error());
+	$lgSearch=$conn->prepare("select * from $sr_LGA where fname like '$sr_fname%'",$conn)->fetchAll();
+	if(empty($lgSearch)) {
+			die ("wrong query");
 		} else{
 		
-			while ($sr_lg=mysql_fetch_array($lgSearch))
-			{
+			foreach ($lgSearch as $sr_lg) {
 				$lg_sn[$zIndex] = $sr_lg['sn'];
 				$sr_res .= "<tr>";
 				$sr_res .= "<td>".$sr_lg['sn']. "</td> \n";

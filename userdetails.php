@@ -67,15 +67,16 @@ div.css3splitmenu > ul {
     	<div style="margin:5%">
         <?php
 	$logman=$_SESSION["user"];
-$detail_que=mysql_query("select * from useres where uname='$logman' limit 1");
-if($detail_que){
-	while($get_details=mysql_fetch_array($detail_que)){
+$detail_que=$conn->query("select * from useres where uname='$logman' limit 1")->fetchAll(PDO::FETCH_ASSOC);
+if(!empty($detail_que)){
+    foreach ($detail_que as $get_detailss){
+        $get_details = array_values($get_detailss);
 		/* echo "<script> alert(\"".$get_details['lname']."\");</script>"; */
 		$namefull=$get_details[3]." ".$get_details[4]." ".$get_details[5];
 		$uright=$get_details[6];
 	
 	}
-}else{echo "Some error(s) ".mysql_error();}
+}else{echo "Some error(s) ";}
 
 		?>
        <?php

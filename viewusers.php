@@ -105,7 +105,8 @@ div.css3splitmenu > ul {
 	$vuactions = $_GET["action"];
 	if ($vuactions=="none"){
 		include("vutable.php");
-	} else if($vuactions="add"){
+	}
+	else if($vuactions="add") {
 		include("vreg.php");	
 	
 	?>

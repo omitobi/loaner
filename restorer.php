@@ -24,13 +24,13 @@ if (isset($sr_LGA_bt)){
 	//echo $sr_phone;
 	//$sr_LGA_temp = $sr_LGA;
 	
-	$lgSearch=mysql_query("select * from $sr_LGA where fname like '$sr_fname%'",$conn);
+	$lgSearch=$conn->prepare("select * from $sr_LGA where fname like '$sr_fname%'",$conn)->fetchAll();
 	if(!$lgSearch)
 		{
-			die ("wrong query".mysql_error());
+			die ("wrong query");
 		} else{
 			$zIndex=0;
-			while ($sr_lg=mysql_fetch_array($lgSearch))
+			foreach ($lgSearch as $sr_lg)
 			{
 				$lg_sn[$zIndex] = $sr_lg['sn'];
 				$sr_res .= "<tr bgcolor=\"#999999\">";

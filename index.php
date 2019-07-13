@@ -1,7 +1,7 @@
 <?php
 session_start();
 $notify_msg="<font color=\"green\" style=\"background-color:#FFFFFF\">"."Login correctly</font>";
- require_once ("class/connector.php");
+ require ("class/connector.php");
 
 if(!$_SESSION["user"]){
 
@@ -48,11 +48,11 @@ ul, li{
 
 
 <?php
-extract($_POST);
+extract($_SESSION);
 					//$ is for variable declaration
 if(isset($pass))
 {
-	$rs=$conn->query("select * from useres where uname='$spec_id' and pword='$spec_word'")->fetchAll();	   //userdata is the table name in tester1 database
+	$rs=$conn->prepare("select * from useres where uname='$spec_id' and pword='$spec_word'")->fetchAll();	   //userdata is the table name in tester1 database
 	if(empty($rs))
 	{
 		$notify_msg="<font color=\"red\" style=\"background-color:#FFFFFF\">"."Incorrect login credentials</font>";
