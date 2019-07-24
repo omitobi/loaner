@@ -25,7 +25,7 @@ if (isset($sr_LGA_bt)) {
     //$sr_LGA_temp = $sr_LGA;
     if ($sr_LGA != "select_lga") {
         try {
-            $lgSearch = $conn->query("select * from $sr_LGA where fname like '$sr_fname%' and lname like '$sr_lname%' and phone like '$sr_phone%' order by sn", $conn)->fetchAll();
+            $lgSearch = $conn->query("select * from $sr_LGA where `fname` like '%$sr_fname%' and `lname` like '%$sr_lname%' and `phone` like '%$sr_phone%' order by `sn`")->fetchAll();
             $zIndex = 0;
             foreach ($lgSearch as $sr_lg) {
                 $lg_sn[$zIndex] = $sr_lg['sn'];
@@ -132,7 +132,7 @@ if (isset($sr_LGA_bt)) {
                             <?php
                             $tab_val = "";
                             for ($nm = 0; $nm < count($tabler); $nm++) {
-                                if ($tabler[$nm] == "lgabackup" || $tabler[$nm] == "restorelog" || $tabler[$nm] != "ido")
+                                if ($tabler[$nm] == "lgabackup" || $tabler[$nm] == "restorelog" || $tabler[$nm] != "Ido")
                                     continue;
                                 $temp = $tabler[$nm];
                                 echo "<option value=\"$temp\" onclick=\"return true;\">" . $temp . "</option>" . " \n";
